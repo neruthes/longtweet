@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Long Tweet</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="pridejs-config-duration" content="regular">
+	<style type="text/css">
+	._desktop-linecompact {
+		display: inline-block;
+	}
+	._desktop-linebreak {
+		display: block;
+	}
+	@media screen and (max-width: 767px) {
+		.desktop-only {
+			display: none;
+		}
+		._desktop-linecompact {
+			display: block;
+		}
+		._desktop-linebreak {
+			display: inline-block;
+		}
+	}
+	</style>
+	<style type="text/css">
+	* {
+		text-rendering: optimizeLegibility;
+		box-sizing: border-box;
+		transition: all 200ms ease;
+	}
+	body {
+		font-family: 'Source Code Pro', Seravek, 'Open Sans', 'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, 'Arial-Black', 'Arial Black', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei', sans-serif;
+		font-size: 18px;
+		font-weight: 300;
+		color: #FFF;
+		color: #666;
+		background: #2089DA;
+		background: #F2F2F2;
+		padding: 0;
+		margin: 0;
+	}
+	.cont {
+		width: auto;
+		max-width: 660px;
+		padding: 1px 24px 0;
+		margin: 0 auto;
+	}
+	.content {
+		margin: 1.6rem 0 0;
+	}
+	h1 {
+		font-size: 26px;
+		letter-spacing: 0.02rem;
+		height: 0px;
+		margin: 1.6rem 0 0;
+		overflow: hidden;
+	}
+	h2 {
+		font-size: 16px;
+		font-weight: 500;
+		letter-spacing: 0.12rem;
+		text-transform: uppercase;
+		opacity: 1;
+		margin: 0 0 0.8rem;
+	}
+	textarea {
+		font-family: 'Source Code Pro', 'Menlo', 'Consolas', 'Monaco', Seravek, 'Open Sans', 'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, 'Arial-Black', 'Arial Black', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei', sans-serif;
+		font-size: 18px;
+		font-weight: 400;
+		line-height: 26px;
+		word-wrap: break-word;
+		word-break: break-all;
+		box-shadow: rgba(0, 0, 0, 0.044) 0 1px 2px;
+		border: none;
+		border-radius: 3px;
+		outline: none;
+
+		display: block;
+		width: 100%;
+		height: 20vh;
+		padding: 6px;
+		margin: 0;
+
+		resize: none;
+	}
+	@media screen and (max-height: 500px) {
+		textarea {
+			height: 6rem;
+		}
+	}
+	#ta-encoded {
+		visibility: hidden;
+	}
+	footer {
+		font-size: 13px;
+		font-weight: 400;
+		color: #666;
+
+		padding: 2rem 0 2rem;
+	}
+	footer a {
+		opacity: 1;
+		transition: none;
+	}
+	footer a:hover {
+		opacity: 1;
+	}
+	/* ---------------------------------------- */
+	a {
+		color: #17D;
+		/* text-decoration: none; */
+	}
+	</style>
+    <style media="screen">
+    body[data-scene="detail"] .cont[data-for-scene="home"] { display: none; }
+    body[data-scene="home"] .cont[data-for-scene="detail"] { display: none; }
+    </style>
+	<script>
+	function focus () {
+		document.getElementById('ta-original').focus();
+	};
+	</script>
+</head>
+<body onclick="focus()" data-string-empty="true">
+	<script type="text/javascript">
+	// Scene
+	if (location.search.indexOf('?t=001') === 0) {
+		document.body.setAttribute('data-scene', 'detail');
+		window.addEventListener('load', function () {
+			var payload = location.search.slice(6);
+			var originalText = decodeURIComponent(atob(payload));
+			document.querySelector('#js-app-page-canvas').innerHTML = originalText.replace(/\n+/g, '\n').split('\n').map(function (v, i) {
+				return '<p>' + v + '</p>';
+			}).join('');
+		});
+	} else {
+		document.body.setAttribute('data-scene', 'home');
+	};
+	</script>
+	<div class="cont" onclick="focus()" data-for-scene="home">
+		<h1><a href="./">EncodeURI</a></h1>
+		<div class="content" id="ta-original-container">
+			<h2><label for="ta-original">Original Text</label></h2>
+			<textarea id="ta-original" autofocus></textarea>
+		</div>
+		<div class="content fade-when-input-box-empty" id="ta-encoded-container">
+			<h2>Tweet This Link</h2>
+			<textarea id="ta-encoded"></textarea>
+		</div>
+		<footer class="desktop-only fade-when-input-box-empty">
+			<div class="_desktop-linecompact">
+                <div class="">
+                    Long Tweet utility. Created by <a href="//neruthes.xyz/"><strong>Neruthes</strong></a>.
+                </div>
+				<div class="">
+                    <a href="//github.com/neruthes/longtweet">Source code</a> available.
+                </div>
+				<div class="">
+                    Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a>.
+                </div>
+			</div>
+		</footer>
+	</div>
+    <div class="cont" data-for-scene="entry">
+		<style>
+		.content {
+			font-family: -apple-system, 'Helvetica Neue', 'Source Sans Pro', sans-serif, 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'YuGothic', 'Heiti SC';
+			font-weight: 400;
+			font-size: 20px;
+			color: #000;
+			line-height: 1.4em;
+		}
+		</style>
+		<section class="content">
+			<h2 style="color: #999;">Long Tweet Content</h2>
+			<div class="" id="js-app-page-canvas">
+				<!-- Content here -->
+			</div>
+		</section>
+    </div>
+	<script>
+	var userInputEventHandler = function () {
+        encodedUri = encodeURIComponent(document.getElementById('ta-original').value);
+		document.getElementById('ta-encoded').value = 'https://joyneop.xyz/longtweet/?t=001' + btoa(encodedUri).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
+		if (document.getElementById('ta-original').value.length !== 0) {
+			document.body.setAttribute('data-string-empty', 'false');
+		} else {
+			document.body.setAttribute('data-string-empty', 'true');
+		};
+	};
+	document.getElementById('ta-original').addEventListener('input', userInputEventHandler);
+	userInputEventHandler();
+	document.getElementById('ta-encoded').style.visibility = 'visible';
+
+	var taEncodedFocusEventHandler = function () {
+		setTimeout(function () {
+			document.getElementById('ta-encoded').select();
+		}, 10);
+	};
+
+	document.getElementById('ta-encoded').addEventListener('focus', taEncodedFocusEventHandler);
+	document.getElementById('ta-encoded').addEventListener('click', taEncodedFocusEventHandler);
+	</script>
+	<!-- <script src="https://neopcdn.github.io/pride.js/pride.js"></script> -->
+</body>
+</html>
