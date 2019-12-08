@@ -130,7 +130,7 @@
 		document.body.setAttribute('data-scene', 'entry');
 		window.addEventListener('load', function () {
 			var payload = location.search.slice(6);
-			var originalText = unescape(atob(payload));
+			var originalText = unescape(payload);
 			document.querySelector('#js-app-page-canvas').innerHTML = originalText.replace(/\n+/g, '\n').split('\n').map(function (v, i) {
 				return '<p>' + v + '</p>';
 			}).join('');
@@ -183,7 +183,7 @@
 	<script>
 	var userInputEventHandler = function () {
         encodedUri = escape(document.getElementById('ta-original').value);
-		document.getElementById('ta-encoded').value = 'https://joyneop.xyz/longtweet/?t=001' + btoa(encodedUri).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
+		document.getElementById('ta-encoded').value = 'https://joyneop.xyz/longtweet/?t=001' + (encodedUri).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
 		if (document.getElementById('ta-original').value.length !== 0) {
 			document.body.setAttribute('data-string-empty', 'false');
 		} else {
