@@ -130,7 +130,7 @@
 		document.body.setAttribute('data-scene', 'detail');
 		window.addEventListener('load', function () {
 			var payload = location.search.slice(6);
-			var originalText = decodeURIComponent(atob(payload));
+			var originalText = unescape(atob(payload));
 			document.querySelector('#js-app-page-canvas').innerHTML = originalText.replace(/\n+/g, '\n').split('\n').map(function (v, i) {
 				return '<p>' + v + '</p>';
 			}).join('');
@@ -140,7 +140,7 @@
 	};
 	</script>
 	<div class="cont" onclick="focus()" data-for-scene="home">
-		<h1><a href="./">EncodeURI</a></h1>
+		<h1><a href="./">Long Tweet</a></h1>
 		<div class="content" id="ta-original-container">
 			<h2><label for="ta-original">Original Text</label></h2>
 			<textarea id="ta-original" autofocus></textarea>
@@ -182,7 +182,7 @@
     </div>
 	<script>
 	var userInputEventHandler = function () {
-        encodedUri = encodeURIComponent(document.getElementById('ta-original').value);
+        encodedUri = escape(document.getElementById('ta-original').value);
 		document.getElementById('ta-encoded').value = 'https://joyneop.xyz/longtweet/?t=001' + btoa(encodedUri).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
 		if (document.getElementById('ta-original').value.length !== 0) {
 			document.body.setAttribute('data-string-empty', 'false');
