@@ -114,8 +114,8 @@
 	}
 	</style>
     <style media="screen">
-    body[data-scene="detail"] .cont[data-for-scene="home"] { display: none; }
-    body[data-scene="home"] .cont[data-for-scene="detail"] { display: none; }
+    body[data-scene="entry"] .cont[data-for-scene="home"] { display: none; }
+    body[data-scene="home"] .cont[data-for-scene="entry"] { display: none; }
     </style>
 	<script>
 	function focus () {
@@ -127,7 +127,7 @@
 	<script type="text/javascript">
 	// Scene
 	if (location.search.indexOf('?t=001') === 0) {
-		document.body.setAttribute('data-scene', 'detail');
+		document.body.setAttribute('data-scene', 'entry');
 		window.addEventListener('load', function () {
 			var payload = location.search.slice(6);
 			var originalText = unescape(atob(payload));
