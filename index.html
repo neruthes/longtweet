@@ -131,8 +131,10 @@
 		window.addEventListener('load', function () {
 			var payload = location.search.slice(6);
 			var originalText = unescape(payload);
-			document.querySelector('#js-app-page-canvas').innerHTML = originalText.replace(/\n+/g, '\n').split('\n').map(function (v, i) {
-				return '<p>' + v + '</p>';
+			document.querySelector('#js-app-page-canvas').innerHTML = unescape(originalText).replace(/\n+/g, '\n').split('\n').map(function (v, i) {
+				return '<p>' + v.replace(/%([0-9A-F]{2})/gi, function () {
+					return String.fromCodePoint(arguments[1]);
+				}) + '</p>';
 			}).join('');
 		});
 	} else {
@@ -149,19 +151,6 @@
 			<h2>Tweet This Link</h2>
 			<textarea id="ta-encoded"></textarea>
 		</div>
-		<footer class="desktop-only fade-when-input-box-empty">
-			<div class="_desktop-linecompact">
-                <div class="">
-                    Long Tweet utility. Created by <a href="//neruthes.xyz/"><strong>Neruthes</strong></a>.
-                </div>
-				<div class="">
-                    <a href="//github.com/neruthes/longtweet">Source code</a> available.
-                </div>
-				<div class="">
-                    Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a>.
-                </div>
-			</div>
-		</footer>
 	</div>
     <div class="cont" data-for-scene="entry">
 		<style>
@@ -180,12 +169,28 @@
 			</div>
 		</section>
     </div>
+	<div class="cont">
+		<footer class="fade-when-input-box-empty">
+			<div class="_desktop-linecompact">
+                <div class="">
+                    Long Tweet utility. Created by <a href="//neruthes.xyz/"><strong>Neruthes</strong></a>.
+                </div>
+				<div class="">
+                    <a href="//github.com/neruthes/longtweet">Source code</a> available.
+                </div>
+				<div class="">
+                    Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a>.
+                </div>
+			</div>
+		</footer>
+	</div>
 	<script>
 	var userInputEventHandler = function () {
         encodedUri = escape(document.getElementById('ta-original').value).replace(/[^\w\d\-\_\+]/g, function (char) {
 			return '%' + char.codePointAt(0).toString(16).toUpperCase();
 		});
-		document.getElementById('ta-encoded').value = 'https://joyneop.xyz/longtweet/?t=001' + (encodedUri).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
+		// document.getElementById('ta-encoded').value = 'https://joyneop.xyz/longtweet/?t=001' + (encodedUri).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
+		document.getElementById('ta-encoded').value = 'http://localhost:8000/?t=001' + (encodedUri).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
 		if (document.getElementById('ta-original').value.length !== 0) {
 			document.body.setAttribute('data-string-empty', 'false');
 		} else {
