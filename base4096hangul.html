@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Long Tweet</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="pridejs-config-duration" content="regular">
+	<script type="text/javascript">
+	var parsedQueryParam = (function () {
+		var tmpArr = location.search.slice(1).split('&').map(function (x) {return x.split('=')});
+		var tmpObj = {};
+		tmpArr.map(function (x) {tmpObj[x[0]]=x[1]});
+		return tmpObj;
+	})();
+	var debug = function (msg) {
+		if (parsedQueryParam.debug === 'yes') {
+			console.log('Debug Stamp:', msg);
+		};
+	};
+	</script>
+	<style type="text/css">
+	#btn-longtweet {
+		font-size: 18px;
+		line-height: 50px;
+		text-align: center;
+		text-decoration: none;
+		color: #FFF;
+		background: #07F;
+		border: none;
+		border-radius: 4px;
+		display: block;
+		width: 80%;
+		height: 50px;
+		max-width: 280px;
+		padding: 0;
+		margin: 0 auto;
+		cursor: pointer;
+	}
+	#btn-longtweet:hover {
+		opacity: 0.75;
+	}
+	</style>
+	<style type="text/css">
+	._desktop-linecompact {
+		display: inline-block;
+	}
+	._desktop-linebreak {
+		display: block;
+	}
+	@media screen and (max-width: 767px) {
+		.desktop-only {
+			display: none;
+		}
+		._desktop-linecompact {
+			display: block;
+		}
+		._desktop-linebreak {
+			display: inline-block;
+		}
+	}
+	</style>
+	<style type="text/css">
+	* {
+		text-rendering: optimizeLegibility;
+		box-sizing: border-box;
+		transition: all 200ms ease;
+	}
+	html {
+		background: #F6F6F6;
+	}
+	body {
+		font-family: 'Source Code Pro', Seravek, 'Open Sans', 'Helvetica Neue', Helvetica, 'Lucida Grande', Arial, 'Arial-Black', 'Arial Black', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei', sans-serif;
+		font-size: 18px;
+		font-weight: 300;
+		color: #666;
+		background: #F6F6F6;
+		padding: 0;
+		margin: 0;
+	}
+	.cont {
+		width: auto;
+		max-width: 660px;
+		padding: 1px 22px 0;
+		margin: 0 auto;
+	}
+	.content {
+		margin: 1.6rem 0 0;
+	}
+	h1 {
+		font-size: 26px;
+		letter-spacing: 0.02rem;
+		height: 0px;
+		margin: 1.6rem 0 0;
+		overflow: hidden;
+	}
+	h2 {
+		font-size: 16px;
+		font-weight: 500;
+		letter-spacing: 0.12rem;
+		text-transform: uppercase;
+		opacity: 1;
+		margin: 0 0 0.8rem;
+	}
+	textarea {
+		font-family: -apple-system, 'SF Pro Text', 'Helvetica Neue', Helvetica, 'Segoe UI', 'Open Sans', 'Lucida Grande', Arial, sans-serif, 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei';
+		font-size: 18px;
+		font-weight: 400;
+		line-height: 1.6em;
+		word-wrap: break-word;
+		word-break: break-all;
+		box-shadow: rgba(0, 0, 0, 0.044) 0 1px 2px;
+		border: none;
+		border-radius: 6px;
+		outline: none;
+
+		display: block;
+		width: 100%;
+		height: 28vh;
+		padding: 6px;
+		margin: 0;
+
+		resize: none;
+	}
+	@media screen and (max-height: 500px) {
+		textarea {
+			height: 6rem;
+		}
+	}
+	#btn-longtweet {
+		visibility: hidden;
+	}
+	footer {
+		font-size: 13px;
+		font-weight: 400;
+		color: #555;
+		padding: 2rem 0 2rem;
+	}
+	footer a {
+		opacity: 1;
+		transition: none;
+	}
+	footer a:hover {
+		opacity: 1;
+	}
+	/* ---------------------------------------- */
+	a {
+		color: #17D;
+		/* text-decoration: none; */
+	}
+	</style>
+    <style media="screen">
+    body[data-scene="entry"] .cont[data-for-scene="home"] { display: none; }
+    body[data-scene="home"] .cont[data-for-scene="entry"] { display: none; }
+    </style>
+	<script>
+	function focus () {
+		document.getElementById('ta-original').focus();
+	};
+	</script>
+	<script type="text/javascript">
+	var base64digits = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.toLowerCase() + '0123456789-_/';
+	var Base4096HangulEncode_char = function (uint12) {
+	    console.log(uint12);
+	    return String.fromCodePoint(uint12+0xAC00);
+	};
+	var Base65536HanziDecode_char = function (char) {
+	    var charCode = char.codePointAt(0);
+	    return charCode-0xAC00;
+	};
+	var encodeBase4096HangulString = function (rawStr) {
+		var rawArr = (new TextEncoder('utf-8')).encode(rawStr);
+		var arr = [];
+		rawArr.map(function (x) {
+			arr.push(x);
+		});
+		var result_1 = arr.map(function (x) {
+			var xbin = x.toString(2);
+			if (xbin.length < 8) {
+				xbin = (new Array(8-xbin.length)).fill('0').join('') + xbin;
+			};
+			return xbin;
+		}).join('').replace(/(\d{12})/g, '$1 ').trim();
+		var result = result_1.split(' ').map(function (x) {
+			if (x.length === 12) {
+				return Base4096HangulEncode_char(parseInt(x, 2));
+			} else {
+				return Base4096HangulEncode_char(parseInt(x + (new Array(12-x.length)).fill(0).join(''), 2));
+			};
+		}).join('');
+		console.log('encodeBase4096HangulString:result', result);
+		console.log('encodeBase4096HangulString:decodingTest', decodeBase4096HangulString(result));
+		return result;
+	};
+	var decodeBase4096HangulString = function (rawStr) {
+		var MyArr = rawStr.split('').map(function (digit) {
+			var num = Base65536HanziDecode_char(digit);
+			var xbin = num.toString(2);
+			var realXbin = (new Array(12-xbin.length)).fill('0').join('') + xbin;
+			return realXbin;
+		}).join('').replace(/(\d{8})/g, '$1 ').trim().split(' ').map(function (xbin, i) {
+			if (xbin.length === 8) {
+				return parseInt(xbin, 2);
+			};
+		});
+	    var decodedString = (new TextDecoder('utf-8')).decode(new Uint8Array(MyArr)).replace('\0', '');
+	    return decodedString;
+	};
+	</script>
+</head>
+<body onclick="focus()" data-string-empty="true">
+	<script type="text/javascript">
+	// Scene
+	if (parsedQueryParam.t || parsedQueryParam.m) {
+		document.body.setAttribute('data-scene', 'entry');
+	}
+	</script>
+	<div class="cont" onclick="focus()" data-for-scene="home">
+		<h1><a href="./">Long Tweet</a></h1>
+		<div class="content" id="ta-original-container">
+			<h2><label for="ta-original">Original Text</label></h2>
+			<textarea id="ta-original" autofocus spellcheck="true"></textarea>
+		</div>
+		<div class="content fade-when-input-box-empty" id="btn-longtweet-container">
+			<!-- <h2>Tweet This Link</h2> -->
+			<button type="button" id="btn-longtweet">Get Long Tweet Link</button>
+		</div>
+	</div>
+    <div class="cont" data-for-scene="entry">
+		<style>
+		.content {
+			font-family: -apple-system, 'Helvetica Neue', 'Source Sans Pro', sans-serif, 'Noto Sans CJK SC', 'Source Han Sans CN', 'Hiragino Sans GB', 'YuGothic', 'Heiti SC';
+			font-weight: 400;
+			font-size: 20px;
+			color: #000;
+			line-height: 1.4em;
+		}
+		</style>
+		<section class="content">
+			<a href="?" style="
+				font-size: 16px;
+				color: #FFF;
+				line-height: 16px;
+				text-decoration: none;
+				background: #07F;
+				border-radius: 5000px;
+				display: inline-block;
+				float: right;
+				padding: 8px 12px;
+			">Compose Your Own</a>
+			<h2 style="color: #000; line-height: 32px; padding: 0; margin: 0 0 20px;">Long Tweet</h2>
+			<style media="screen">
+			#js-app-page-canvas p {
+				font-size: 18px;
+				line-height: 1.6em;
+			}
+			</style>
+			<div class="" id="js-app-page-canvas" style="
+				background: #FFF;
+				box-shadow: rgba(0, 0, 0, 0.06) 0 5px 17px 1px;
+				border-radius: 6px;
+				padding: 15px 19px;
+				margin: 30px 0;
+			">
+				<!-- Content here -->
+			</div>
+			<script type="text/javascript">
+			if (parsedQueryParam.t) {
+				window.addEventListener('load', function () {
+					var payload = parsedQueryParam.t.slice(3); // "001"
+					var originalText = '[Empty Message]';
+					originalText = unescape(payload);
+					document.querySelector('#js-app-page-canvas').innerHTML = unescape(originalText).replace(/\n+/g, '\n').split('\n').map(function (v, i) {
+						return '<p>' + v.replace(/%([0-9A-F]{2})/gi, function () {
+							return String.fromCodePoint(arguments[1]);
+						}) + '</p>';
+					}).join('');
+				});
+			} else if (parsedQueryParam.m) {
+				var payload = decodeURIComponent(parsedQueryParam.m.slice(4)); // "P12K"
+				console.log('payload', payload);
+				var originalText = '[Empty Message]';
+				var payloadVersion = payload.charAt(0);
+				var payloadDecoders = {
+					'A': function (str) {
+						return decodeBase4096HangulString(str);
+					}
+				};
+				originalText = payloadDecoders[payloadVersion](payload.slice(1));
+				document.querySelector('#js-app-page-canvas').innerHTML = originalText.replace(/\n+/g, '\n').split('\n').map(function (v, i) {
+					return '<p>' + v + '</p>';
+				}).join('');
+			} else {
+				document.body.setAttribute('data-scene', 'home');
+			};
+			</script>
+		</section>
+    </div>
+	<div class="cont">
+		<footer class="fade-when-input-box-empty" style="text-align: center;">
+			<div class="_desktop-linecompact">
+                <div class="">
+                    Long Tweet utility. Created by <a href="//neruthes.xyz/"><strong>Neruthes</strong></a>.
+                </div>
+				<div class="">
+                    <a href="https://github.com/neruthes/longtweet">Source code</a> available.
+                </div>
+				<div class="">
+                    Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL v3</a>.
+                </div>
+			</div>
+		</footer>
+	</div>
+	<script>
+	var lskey = 'xyz.neruthes.longtweet.v1:';
+	var stagingMessage_default = '[Empty Message]';
+	var stagingMessage = '';
+	if (localStorage[lskey+'stagingMessage']) {
+		stagingMessage = localStorage[lskey+'stagingMessage'];
+		document.getElementById('ta-original').value = stagingMessage;
+	};
+	var userInputEventHandler = function () {
+		if (document.getElementById('ta-original').value.length !== 0) {
+			document.body.setAttribute('data-string-empty', 'false');
+			stagingMessage = document.getElementById('ta-original').value;
+			localStorage[lskey+'stagingMessage'] = stagingMessage;
+		} else {
+			document.body.setAttribute('data-string-empty', 'true');
+		};
+	};
+	document.querySelector('#btn-longtweet').addEventListener('click', function () {
+		var rawUserInput = document.getElementById('ta-original').value;
+		stagingMessage = rawUserInput;
+		if (rawUserInput === '') {
+			rawUserInput = stagingMessage_default;
+		};
+        var msgEncoded = [];
+		msgEncoded = ['Base4096Hangul', encodeBase4096HangulString(rawUserInput)]; // UTF-8 Base64
+		var newQueryParameters = '';
+		newQueryParameters = '?m=P12K' + 'A'/*Version: 0*/ + msgEncoded[1];
+		console.log(newQueryParameters);
+		location.href = newQueryParameters;
+	})
+	document.getElementById('ta-original').addEventListener('input', userInputEventHandler);
+	document.getElementById('btn-longtweet').style.visibility = 'visible';
+	</script>
+</body>
+</html>
